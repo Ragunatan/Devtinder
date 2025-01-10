@@ -1,28 +1,21 @@
 const express = require('express')
 
+const adminRoutes = require('./routes/admin.js')
+
+const shopRoutes = require('./routes/shop.js')
+
 const bodyparser  = require('body-parser')
 
 const app = express()
 
 app.use(bodyparser.urlencoded({extended:false}))
 
-app.use('/add-product',(req,res,next) =>{
-    res.send(`<form action ="/product" method ="POST">
-        <input type = "text" name="title" placeholder ="Title">
-        <input type = "number" name="Size" placeholder ="Size">
-        <button type="submit">Add product</button>
-        </form>`)
-})
+app.use(adminRoutes)
+app.use(shopRoutes)
 
-app.post('/product', (req, res,next) =>{
-    console.log(req.body)
-    res.redirect('/')
+app.use((req,res,next) =>{
+    res.status(404).send('<h1>Page not found</h1>')
 })
-
-app.use('/' , (req,res,next) =>{
-    res.send('<H1>This is the homepage</H1>')
-})
-
 app.listen(3000,() =>{
     console.log('server is running')
 }) 
